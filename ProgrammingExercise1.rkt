@@ -30,4 +30,12 @@
       ((null? l2)'())
       ((null? l1)l2)
       ((eq? (car l1)(car l2))(removesubsequence(cdr l1)(cdr l2)))
-      (else (cons (car l1)(removesubsequence l1 (cdr l2)))))))
+      (else (cons (car l2)(removesubsequence l1 (cdr l2)))))))
+
+;reverse*
+(define reverse*
+  (lambda (l)
+    (cond
+      ((null? l) '())
+      ((list? (car l))(cons (reverse* (car l))(reverse* (cdr l))))
+      (else (cons (reverse* (cdr 1)) (car l))))))
