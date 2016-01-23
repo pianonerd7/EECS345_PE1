@@ -55,7 +55,7 @@
       ((list? (car l)) (first* (car l)))
       (else (car l)))))
 
-;7. last*
+;7. last* (t)
 (define last*
   (lambda (l)
     (cond
@@ -64,3 +64,13 @@
       ((and (list? (car l)) (null? (cdr l))) (last* (car l)))
       ((null? (cdr l)) (car l))
       (else (last* (cdr l))))))
+
+;8. numorder*?
+(define numorder*?
+  (lambda (l)
+    (cond
+      ((null? l) #t)
+      ((list? (car l)) (numorder*? (car l)))
+      ((and (list? (car (cdr l)))
+      ((> (car l) (car (cdr l))) #f)
+      (else #f))))
