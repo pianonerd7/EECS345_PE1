@@ -37,5 +37,12 @@
   (lambda (l)
     (cond
       ((null? l) '())
-      ((list? (car l))(cons (reverse* (car l))(reverse* (cdr l))))
-      (else (cons (reverse* (cdr 1)) (car l))))))
+      ((list? (car l))(cons (reverse* (cdr l))(reverse* (car l))))
+      (else (cons (reverse* (cdr l)) (car l))))))
+
+;myappend
+(define myappend
+  (lambda (l1 l2)
+    (cond
+      ((null? l1) l2)
+      (else (cons (car l1)(myappend(cdr l1) l2))))))
