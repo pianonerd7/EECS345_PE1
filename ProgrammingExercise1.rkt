@@ -19,9 +19,12 @@
       (else(+(*(car l1)(car l2))(dotproduct(cdr l1)(cdr l2)))))))
 
 ;3. squareroot
-;(define squareroot
-;  (lambda (value iter)
-;    (cond
+(define squareroot
+  (lambda (val iter)
+    (cond
+      ((zero? iter) val)
+      ((zero? val) val)
+      (else (squareroot (- val (/ (-(* val val) 5) (* 2 val))) (- iter 1))))))
 
 ;4. removesubsequence (t)
 (define removesubsequence
@@ -38,14 +41,14 @@
     (cond
       ((null? l) '())
       ((list? (car l))(cons (reverse* (cdr l))(reverse* (car l))))
-      (else (cons (reverse* (cdr l)) (car l))))))
+      (else (myappend (reverse* (cdr l)) (cons (car l) '()))))))
 
 ;myappend
 (define myappend
   (lambda (l1 l2)
-    (cond
-      ((null? l1) l2)
-      (else (cons (car l1)(myappend(cdr l1) l2))))))
+    (if (null? l1)
+        l2
+        (cons (car l1) (myappend (cdr l1) l2)))))
 
 ;6. first* (t)
 (define first*
@@ -73,4 +76,4 @@
       ((list? (car l)) (numorder*? (car l)))
       ((and (list? (car (cdr l)))
       ((> (car l) (car (cdr l))) #f)
-      (else #f))))
+      (else #f))))))
