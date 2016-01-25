@@ -70,7 +70,16 @@
   (lambda (l)
     (cond
       ((null? l) #t)
-      ((list? (car l)) (numorder*? (car l)))
-      ((and (list? (car (cdr l)))
-      ((> (car l) (car (cdr l))) #f)
+      ((and(list? (car l))(null? (cdr l))) #t)
+      ((and(list? (car l))(> (car l)(numorder* (cdr l)))) #f)
+      ((and (pair? (car l))(pair? (cdr (car l)))) (* (car l)(numorder*? (cdr (car l)))))
+      ((> (car l)(numorder*? (cdr l))) #f)
       (else #f))))
+
+;9. vectormult
+(define vectormult
+  (lambda (vector matrix)
+    (cond
+      ((null? vector) cons 0 '())
+      ((list? (car matrix))))))
+      
