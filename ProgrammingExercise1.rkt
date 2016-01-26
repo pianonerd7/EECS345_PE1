@@ -8,7 +8,7 @@
       ((null? l)#t)
       ((null?(cdr l))#t)
       ((>(car l)(car(cdr l)))#f)
-      (else (inorder (cdr l))))))
+      (else (inorder? (cdr l))))))
 
 ;2. dotproduct (t)
 (define dotproduct
@@ -73,12 +73,26 @@
   (lambda (l)
     (cond
       ((null? l) #t)
-      ((and(list? (car l))(null? (cdr l))) #t)
-      ((and(list? (car l))(> (car l)(numorder* (cdr l)))) #f)
+      ((and(list? (car l))(null? (cdr l))) (numorder*? (car l)))
+      ((and(list? (car l))(> (car l)(numorder*? (cdr l)))) #f)
       ((and (pair? (car l))(pair? (cdr (car l)))) (* (car l)(numorder*? (cdr (car l)))))
       ((> (car l)(numorder*? (cdr l))) #f)
       (else #f))))
 
+(define numorder
+  (lambda (l)
+    (cond
+      ((null? l) #t)
+      ((and (list? (car l))(null? (cdr l))) (inorder? (car l)))
+      ((list? (car l)) (< (+ (car (car l)) (numorder (cdr (car l)))) (numorder (cdr l))))
+      ((and (list? l) (inorder? (car l))))
+      (else #f))))
+
+(define getsum
+  (lambda (l)
+    (cond
+      ((null? l) 0)
+      (
 ;9. vectormult
 (define vectormult
   (lambda (vector matrix)
