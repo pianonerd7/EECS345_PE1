@@ -35,13 +35,13 @@
       ((eq? (car l1)(car l2))(removesubsequence(cdr l1)(cdr l2)))
       (else (cons (car l2)(removesubsequence l1 (cdr l2)))))))
 
-;5. reverse*
+;5. reverse* (t)
 (define reverse*
   (lambda (l)
     (cond
       ((null? l) '())
       ((and (list? (car l))(null? (cdr l)))(cons (reverse* (car l)) '()))
-      ((and (list? (car l))(list? (cdr l)))(myappend (reverse* (cdr l))(reverse* (car l))))
+      ((and (list? (car l))(list? (cdr l)))(myappend (reverse* (cdr l))(cons (reverse* (car l)) '())))
       ((list? (car l))(cons (reverse* (cdr l))(reverse* (car l))))
       (else (myappend (reverse* (cdr l)) (cons (car l) '()))))))
 
