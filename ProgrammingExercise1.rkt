@@ -40,6 +40,8 @@
   (lambda (l)
     (cond
       ((null? l) '())
+      ((and (list? (car l))(null? (cdr l)))(cons (reverse* (car l)) '()))
+      ((and (list? (car l))(list? (cdr l)))(myappend (reverse* (cdr l))(reverse* (car l))))
       ((list? (car l))(cons (reverse* (cdr l))(reverse* (car l))))
       (else (myappend (reverse* (cdr l)) (cons (car l) '()))))))
 
@@ -83,7 +85,7 @@
   (lambda (l)
     (cond
       ((null? l) #t)
-      ((and (list? (car l))(null? (cdr l))) (inorder? (car l)))
+      ((and (list? (car l))(null? (cdr l))) (numorder (car l)))
       ((list? (car l)) (< (+ (car (car l)) (numorder (cdr (car l)))) (numorder (cdr l))))
       ((and (list? l) (inorder? (car l))))
       (else #f))))
@@ -92,10 +94,12 @@
   (lambda (l)
     (cond
       ((null? l) 0)
-      (
+      ((null? (cdr l)) (car l))
+      (else (+ (car l) (getsum (cdr l)))))))
+        
 ;9. vectormult
 (define vectormult
   (lambda (vector matrix)
     (cond
       ((null? vector) cons 0 '())
-      ((list? (car matrix))))))
+      (else (*(car vector)(vectormult vector (cdr matrix)))))))
