@@ -96,10 +96,20 @@
       ((null? l) 0)
       ((null? (cdr l)) (car l))
       (else (+ (car l) (getsum (cdr l)))))))
+
+
         
 ;9. vectormult
 (define vectormult
   (lambda (vector matrix)
     (cond
       ((null? vector) cons 0 '())
+      ((null? (car matrix))(tolists (car matrix)))
       (else (*(car vector)(vectormult vector (cdr matrix)))))))
+
+(define tolists
+  (lambda (vector l)
+    (cond
+      ((null? l) '())
+      (else (cons (cons (* (car l)(car l)) '())(tolists (cdr vector)(cdr l)))))))
+  
