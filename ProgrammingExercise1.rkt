@@ -92,20 +92,20 @@
 
 
         
-;9. vectormult
+;9. vectormult (t)
 (define vectormult
   (lambda (vector matrix)
     (cond
       ((null? matrix) '())
-      ((and(list? (car matrix))(list? (cdr matrix)))(mergelists (tolists vector (car matrix)) (vectormult vector (cdr matrix))))
+      ((and(list? (car matrix))(list? (cdr matrix)))(mergelists (tolists (car vector) (car matrix)) (vectormult (cdr vector) (cdr matrix))))
       (else -1))))
 
-;(tolists '(1 2 3) '(1 2 3)) -> ((1) (4) (9))
+;(tolists '(1 2 3) '(1 2 3)) -> (1 4 9)
 (define tolists
   (lambda (vector l)
     (cond
       ((null? l) '())
-      (else (myappend (cons (* (car vector)(car l)) '())(tolists (cdr vector)(cdr l)))))))
+      (else (myappend (cons (* vector (car l)) '())(tolists vector (cdr l)))))))
 
 (define mergelists
   (lambda (list1 list2)
@@ -114,3 +114,10 @@
       ((null? list2) list1)
       (else (cons (+(car list1)(car list2)) (mergelists (cdr list1) (cdr list2)))))))
   
+;10 matrixmultiply (t)
+(define matrixmultiply
+  (lambda (list1 list2)
+    (cond
+      ((null? list1) '())
+      ((null? (cdr list1)) (cons (vectormult (car list1) list2) '()))
+      (else (cons (vectormult (car list1) list2) (matrixmultiply (cdr list1) list2))))))
