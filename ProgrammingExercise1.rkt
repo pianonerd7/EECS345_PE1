@@ -71,24 +71,17 @@
       (else (last* (cdr l))))))
 
 ;8. numorder*?
+;list is null
+;car is list, cdr is null
+;car is list
+;else
 (define numorder*?
   (lambda (l)
     (cond
-      ((null? l) #t)
-      ((and(list? (car l))(null? (cdr l))) (numorder*? (car l)))
-      ((and(list? (car l))(> (car l)(numorder*? (cdr l)))) #f)
-      ((and (pair? (car l))(pair? (cdr (car l)))) (* (car l)(numorder*? (cdr (car l)))))
-      ((> (car l)(numorder*? (cdr l))) #f)
-      (else #f))))
+      ((null? l)#t)
+      ((and(list? (car l))(null? (cdr l)))
 
-(define numorder
-  (lambda (l)
-    (cond
-      ((null? l) #t)
-      ((and (list? (car l))(null? (cdr l))) (numorder (car l)))
-      ((list? (car l)) (< (+ (car (car l)) (numorder (cdr (car l)))) (numorder (cdr l))))
-      ((and (list? l) (inorder? (car l))))
-      (else #f))))
+       ))))
 
 (define getsum
   (lambda (l)
@@ -103,13 +96,21 @@
 (define vectormult
   (lambda (vector matrix)
     (cond
-      ((null? vector) cons 0 '())
-      ((null? (car matrix))(tolists (car matrix)))
-      (else (*(car vector)(vectormult vector (cdr matrix)))))))
+      ((null? matrix) '())
+      ((and(list? (car matrix))(list? (cdr matrix)))(mergelists (tolists vector (car matrix)) (vectormult vector (cdr matrix))))
+      (else -1))))
 
+;(tolists '(1 2 3) '(1 2 3)) -> ((1) (4) (9))
 (define tolists
   (lambda (vector l)
     (cond
       ((null? l) '())
-      (else (cons (cons (* (car l)(car l)) '())(tolists (cdr vector)(cdr l)))))))
+      (else (myappend (cons (* (car vector)(car l)) '())(tolists (cdr vector)(cdr l)))))))
+
+(define mergelists
+  (lambda (list1 list2)
+    (cond
+      ((null? list1) list2)
+      ((null? list2) list1)
+      (else (cons (+(car list1)(car list2)) (mergelists (cdr list1) (cdr list2)))))))
   
