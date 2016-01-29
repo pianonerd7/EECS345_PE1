@@ -78,7 +78,7 @@
       ((null? (cdr l)) (car l))
       (else (last* (cdr l))))))
 
-;8. numorder*?
+;8. numorder*? (t)
 (define numorder*?
   (lambda (l)
     (cond
@@ -113,8 +113,7 @@
   (lambda (vector matrix)
     (cond
       ((null? matrix) '())
-      ((and(list? (car matrix))(list? (cdr matrix)))(mergelists (tolists (car vector) (car matrix)) (vectormult (cdr vector) (cdr matrix))))
-      (else -1))))
+      (else (and(list? (car matrix))(list? (cdr matrix)))(mergelists (tolists (car vector) (car matrix)) (vectormult (cdr vector) (cdr matrix)))))))
 
 ;(tolists '(1 2 3) '(1 2 3)) -> (1 4 9)
 (define tolists
