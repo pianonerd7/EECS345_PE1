@@ -20,19 +20,12 @@
       (else(+(*(car l1)(car l2))(dotproduct(cdr l1)(cdr l2)))))))
 
 ;3. squareroot
-(define squareroot?
+(define squareroot
   (lambda (val iter)
     (cond
       ((zero? iter) val)
       ((zero? val) val)
-      (else (squareroot (- val (/ (-(* val val) 5) (* 2 val))) (- iter 1))))))
-
-(define squareroot
-  (lambda (val iter)
-    (cond
-      ((zero? val) val)
-      ((eq? iter (squareroot v
-      (else (- (squareroot val (+ 1 iter)) (/(-(* (squareroot val (+ 1 iter))(squareroot val (+ 1 iter))) val)(* 2 (squareroot val (+ 1 iter))))))))))))
+      (else (- (squareroot val (- iter 1)) (/(-(* (squareroot val (- iter 1))(squareroot val (- iter 1))) val)(* 2 (squareroot val (- iter 1)))))))))
 
 ;4. removesubsequence (t)
 (define removesubsequence
