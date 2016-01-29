@@ -79,42 +79,17 @@
       (else (last* (cdr l))))))
 
 ;8. numorder*?
-;list is null
-;car is list, car car is list, cdr is null --> numorder* car list
-;car is list, car car is list --> numorder* car l, numorder* cdr l
-;car is list 
-;else
-;can check if each nested list is in order by invoking inorder?
-;then summing and flattening and invoking inorder again
-
 (define numorder*?
   (lambda (l)
     (cond
       ((null? l)#t)
       ((null? (flatten l))#t)
-      ((and (and (list? (car l))(list? (car (car l))))(and(null? (cdr l))(numorder*? (car l)))) (inorder? (flatten (cons (getsum (car l)) '()))))
-      ((and (and (list? (car l))(list? (car (car l))))(and(numorder*? (car l))(numorder*? (cdr l))))(inorder? (flatten (cons (getsum (car l))(numorder*? (cdr l)))))
-      ((list? (car l))(inorder? (car l)))
-      (else (inorder? (cons (car l)(numorder*? (cdr l)))))))))
-
-(define numorder*
-  (lambda (l)
-    (cond
-      ((null? l) #t)
-      ((and(list? (car l))(list?(car (cdr l))))(and(and (inorder? car l)(inorder? (car (cdr l))))(or(<(getsum (car l))(getsum (car (cdr l))))(=(getsum (car l))(getsum (car (cdr l)))))))
-      ((and(list? (car l))(null? (car (cdr l))))))))
-
-(define numorder
-  (lambda (l)
-    (cond
-      ((null? l)#t)
-      ((null? (flatten l))#t)
       ((and(number? (car l))(null? (cdr l)))#t)
-      ((and(list? (car l))(null? (cdr l)))(numorder (car l)))
-      ((and(list? (car l))(number? (car (cdr l))))(and (or(<(getsum (flatten(car l)))(car (cdr l)))(=(getsum (flatten(car l)))(car (cdr l))))(and (numorder (car l))(numorder(cdr l)))))
-      ((and(list? (car l))(list? (car (cdr l))))(and (or(<(getsum (flatten (car l)))(getsum (flatten(car (cdr l)))))(=(getsum (flatten(car l)))(getsum (flatten(car (cdr l))))))(and (numorder (car l))(numorder(cdr l)))))
-      ((and (number? (car l))(number? (car (cdr l))))(and (or(<(car l)(car (cdr l)))(=(car l)(car (cdr l))))(numorder (cdr l))))
-      ((and (number? (car l))(list? (car (cdr l))))(and (or(<(car l)(getsum (flatten (car (cdr l)))))(=(car l)(getsum (flatten (car(cdr l))))))(numorder(cdr l))))
+      ((and(list? (car l))(null? (cdr l)))(numorder*? (car l)))
+      ((and(list? (car l))(number? (car (cdr l))))(and (or(<(getsum (flatten(car l)))(car (cdr l)))(=(getsum (flatten(car l)))(car (cdr l))))(and (numorder (car l))(numorder*?(cdr l)))))
+      ((and(list? (car l))(list? (car (cdr l))))(and (or(<(getsum (flatten (car l)))(getsum (flatten(car (cdr l)))))(=(getsum (flatten(car l)))(getsum (flatten(car (cdr l))))))(and (numorder (car l))(numorder*?(cdr l)))))
+      ((and (number? (car l))(number? (car (cdr l))))(and (or(<(car l)(car (cdr l)))(=(car l)(car (cdr l))))(numorder*?(cdr l))))
+      ((and (number? (car l))(list? (car (cdr l))))(and (or(<(car l)(getsum (flatten (car (cdr l)))))(=(car l)(getsum (flatten (car(cdr l))))))(numorder*?(cdr l))))
       (else #f))))
       
 
