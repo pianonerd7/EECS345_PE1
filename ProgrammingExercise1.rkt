@@ -6,6 +6,7 @@
   (lambda (l)
     (cond
       ((null? l)#t)
+      ((null? (flatten l))#t)
       ((null?(cdr l))#t)
       ((>(car l)(car(cdr l)))#f)
       (else (inorder? (cdr l))))))
@@ -29,9 +30,9 @@
 (define squareroot
   (lambda (val iter)
     (cond
-      ((zero? iter) val)
       ((zero? val) val)
-      (else (- (squareroot val (- 1 iter)) (/(-(* (squareroot val (- 1 iter))(squareroot val (- 1 iter))) val)(* 2 (squareroot val (- 1 iter)))))))))
+      ((eq? iter (squareroot v
+      (else (- (squareroot val (+ 1 iter)) (/(-(* (squareroot val (+ 1 iter))(squareroot val (+ 1 iter))) val)(* 2 (squareroot val (+ 1 iter))))))))))))
 
 ;4. removesubsequence (t)
 (define removesubsequence
@@ -79,25 +80,58 @@
 
 ;8. numorder*?
 ;list is null
-;car is list, cdr is null
-;car is list
+;car is list, car car is list, cdr is null --> numorder* car list
+;car is list, car car is list --> numorder* car l, numorder* cdr l
+;car is list 
 ;else
+;can check if each nested list is in order by invoking inorder?
+;then summing and flattening and invoking inorder again
+
 (define numorder*?
   (lambda (l)
     (cond
       ((null? l)#t)
-      ((and(list? (car l))(null? (cdr l)))
+      ((null? (flatten l))#t)
+      ((and (and (list? (car l))(list? (car (car l))))(and(null? (cdr l))(numorder*? (car l)))) (inorder? (flatten (cons (getsum (car l)) '()))))
+      ((and (and (list? (car l))(list? (car (car l))))(and(numorder*? (car l))(numorder*? (cdr l))))(inorder? (flatten (cons (getsum (car l))(numorder*? (cdr l)))))
+      ((list? (car l))(inorder? (car l)))
+      (else (inorder? (cons (car l)(numorder*? (cdr l)))))))))
 
-       ))))
+(define numorder*
+  (lambda (l)
+    (cond
+      ((null? l) #t)
+      ((and(list? (car l))(list?(car (cdr l))))(and(and (inorder? car l)(inorder? (car (cdr l))))(or(<(getsum (car l))(getsum (car (cdr l))))(=(getsum (car l))(getsum (car (cdr l)))))))
+      ((and(list? (car l))(null? (car (cdr l))))))))
+
+(define numorder
+  (lambda (l)
+    (cond
+      ((null? l)#t)
+      ((null? (flatten l))#t)
+      ((and(number? (car l))(null? (cdr l)))#t)
+      ((and(list? (car l))(null? (cdr l)))(numorder (car l)))
+      ((and(list? (car l))(number? (car (cdr l))))(and (or(<(getsum (flatten(car l)))(car (cdr l)))(=(getsum (flatten(car l)))(car (cdr l))))(and (numorder (car l))(numorder(cdr l)))))
+      ((and(list? (car l))(list? (car (cdr l))))(and (or(<(getsum (flatten (car l)))(getsum (flatten(car (cdr l)))))(=(getsum (flatten(car l)))(getsum (flatten(car (cdr l))))))(and (numorder (car l))(numorder(cdr l)))))
+      ((and (number? (car l))(number? (car (cdr l))))(and (or(<(car l)(car (cdr l)))(=(car l)(car (cdr l))))(numorder (cdr l))))
+      ((and (number? (car l))(list? (car (cdr l))))(and (or(<(car l)(getsum (flatten (car (cdr l)))))(=(car l)(getsum (flatten (cdr l)))))(numorder(cdr l))))
+      (else  #f))))
+      
 
 (define getsum
   (lambda (l)
     (cond
-      ((null? l) 0)
+      ((null? l)0)
+      ((null? (flatten l))0)
       ((null? (cdr l)) (car l))
       (else (+ (car l) (getsum (cdr l)))))))
 
-
+(define flatten
+  (lambda (l)
+    (cond
+      ((null? l) '())
+      ((list? (car l)) (myappend (flatten (car l)) (flatten(cdr l))))
+      (else (cons (car l) (flatten (cdr l)))))))
         
 ;9. vectormult (t)
 (define vectormult
